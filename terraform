@@ -1,0 +1,34 @@
+Statefile dans s3.
+
+S3 ----> DynamoDB ----> Terraform ----> User
+
+- Quand un user va plan ou apply => Cela va envoyer un .lock a DynamoDB.
+- DynamoDB communique a l'user si il a la possibilite de plan/apply ou pas.
+
+Steps:
+- init: installations des pkgs Go, verification des credentials et syntaxiques.
+- plan: output les differences entre les statefiles => Creation du binaire
+        qui representent la nouvelle infra.
+- apply: compare si le binaire de la nouvelle infra generer par plan est bon
+         si c'est le cas, applique les modifications sur l'infra.
+- destroy: detruit des elements/toute l'infra.
+- refresh: voit les differences entre le statefile et la vraie infra.
+
+terraform ----> Code en Go ----> Providers.
+
+Axa ont un provider qu'ils veulent manager avec Go.
+
+Ce qui permet de developper les connecteurs Go.
+TF 0.12 => SDK 1 
+TF 1.0 => SDK 2/ Framework (en beta)
+
+sur TF 1.0 => le terraform plan ne montre plus que les choses anciennement modifiees.
+
+plan: fonction read dans le code source
+apply: read + create
+
+Avec SDK, on avait une liste d'objets.
+Avec Framework, on a des dictionaires imbriquees.
+
+C'est mieux car avec les listes, il fallait chercher la bonne clee.
+
