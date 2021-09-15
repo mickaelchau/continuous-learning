@@ -1,0 +1,37 @@
+user -- serialize/request --> Web Server
+
+JSON <-- unserialize/response -- Object
+yaml
+txt
+
+Header: (key/value)
+Content-Type: application/json
+Accept: application/json 
+
+Body: [example]
+{
+    Id: "1",
+    Name: "Pikachu",
+    ...
+}
+
+Methods: POST, GET, PUT, DELETE, ...
+
+Many webservers are asynchron => they treat as many requests as possible 
+and they respond when they can.
+
+- A user send a method POST 
+- Server asks to DB to create the object
+- DB creates an object and send its id to server
+- Server responds id of object to client (to help client tracking the object)
+
+API REST: Urls are formated following those rules:
+- /cards/
+- /card/{id}
+- no client information is stored between get requests
+
+C: printf is a variadic function: iterates to all elements => 
+type string ... => whatever number of str
+
+PATCH = modifier (seulement quelques elements)
+PUT = supprimer et ajouter (tous les elements)

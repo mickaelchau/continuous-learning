@@ -1,0 +1,37 @@
+1) Moyen de recuperer les msgs/infos/logs
+2) Get and treatment of data
+3) Storage
+4) Display
+
+1) 
+Post/Send data in a place:
+- get data at logfiles or stdout by use Logstach or Fluentd (depreciated)
+- directly connect data source to th 2) service
+
+2)
+producers:
+- Me
+- Logstach & Fluentd
+
+consumer:
+- service which get datas 
+
+-- producer -->  Kafka  --> consumer 
+
+3) 
+DB storages et search data 
+service: Elastic Search (DB very powerful for searching function)
+Elastic Search is a consumer of Kafka
+
+4)
+service: Kibana
+- get data from Elastic Seatch 
+- treatment and display graphs & charts of those data
+
+stack: EFK/ELK
+
+Prometheus = Fusion of all those logging srvices
+
+In prod, we want to watch logs but not debugging => that's why we use log 
+and not fmt
+
