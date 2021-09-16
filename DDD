@@ -1,0 +1,34 @@
+DDD stands for Domain Driven Design
+
+1. Create an ubiquitious language between the client and me
+   => organize around actions/services (ex: invoicing, ordering, ...)
+      and concepts (ex: user, product, ...)
+   Language must be clear as possible (have to evolve)
+2. Organize software according to those services/bounded context:
+   - A directory for each service
+3. In those services, organize directories according to clean architecture 
+   design 
+
+1. Business Needs ---> Software Engineer ---> Technical
+2. Amazon services:
+    - Cataloging
+    - Ordering
+    - Invoicing
+    - Shipping
+    - Packaging
+In each service, user and product data needs are not the same 
+=> I need a photo of the product in Cataloging but it is useless in 
+packaging
+Therefore, data/object has to evolve with service
+
+3. Clean archicture design is as follow:
+Controller ---> Service ---> DB
+
+Controller => Interaction of user with the service, how users come here
+Service => What the service does
+DB => how we acces data and deliver it to the service
+
+Services are found during event storm.
+People are gathering to define the user journey (parcours utilisateur)
+=> To find differents services the user needs. 
+
