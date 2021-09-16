@@ -1,0 +1,31 @@
+Volume = bridge between a filesystem of a container and a local filesystem
+
+Never containerize:
+1) Statefull app
+2) Not Scalable app
+3) If I do not have the ressources to do it
+
+example 1) Database => because a container can be destroyed 
+example 2) Legacy App
+
+example 3) 
+Let's take a big company => A
+A have paid for Kube to manage containers.
+Kube is very expensive so the company want to contenerize all its app
+The company have to paid to form people to contenerization, hire people to 
+maintain Kube.
+Some application are not designed for contenerization
+=> It is not worth it to contenerize
+
+People wants to contenerize DB.
+Pb is DB is writing on the filesystem of the VM which is running the container.
+People has invented a software to connect where the DB is writing to the cloud.
+With this functionality, it is now possible to contenerize Db => But not very
+smart.
+
+Redis is a DB very powerful for cache functionnality.
+
+People contenerize the software to monitore containers
+But not very smart because if the monitore software has a pb.
+No ones know if there's a pb.
+
