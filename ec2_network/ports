@@ -1,0 +1,8 @@
+Even if my app is listening on port 8080, my ec2 instance has to set this
+port to open to detect the entries.
+
+Private address is the address you have in a private network (not connected to 
+internet. (192.168.1.X)
+
+localhost can be modify in /etc/hosts = 127.0.0.1 
+

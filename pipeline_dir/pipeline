@@ -1,0 +1,40 @@
+Classical pipeline: BTD => Build/Test/Deploy
+CI => Build/Test
+CD => Deploy
+
+Local:                          
+ Lint                 |              
+---v---               |              
+ Build                |CI              
+---v---               |                 
+Test Unitaires        |              
+---v---               |  |            
+ Push                    |           
+---v---                  |CD
+Deploy                   |
+---v---                  |   
+Test Intégration         |
+
+test env: (do above steps again)
+---v---
+Deploy into a new env  cp prod data
+---V---
+New tests (stress/performance tests) 
+
+prod env: 
+---v---
+Deploy into env 
+---V--- 
+New tests (stress/performance tests) 
+
+VM configuration => configuration manager => Ansible
+
+Ansible:
+- From your local machine
+- Connects by SSH to a remote one
+- Give orders to those machines
+        
+        SSH
+Local ------> VM
+
+Orchestration with Ansible is a bad idea because no state files

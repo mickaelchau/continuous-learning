@@ -23,6 +23,8 @@ Therefore, data/object has to evolve with service
 
 3. Clean archicture design is as follow:
 Controller ---> Service ---> DB
+Those 3 parts must be isolated 
+
 
 Controller => Interaction of user with the service, how users come here
 Service => What the service does
@@ -31,4 +33,5 @@ DB => how we acces data and deliver it to the service
 Services are found during event storm.
 People are gathering to define the user journey (parcours utilisateur)
 => To find differents services the user needs. 
+
 
