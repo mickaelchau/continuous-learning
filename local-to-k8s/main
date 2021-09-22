@@ -1,0 +1,136 @@
+Source:
+https://www.youtube.com/watch?v=0CimP_Qvy2Q&t=1394s&ab_channel=Emile%60iMil%27Heitor
+
+--- Local Server ---
+
+Flask: utilisé pour créer des serveurs REST 
+(répondre à des cmds et renvoyer des valeurs).
+
+On crée une app qui va retourner le nombre de fois ou le serveur nous à répondu, 
+notre adresse ip et l'adresse ip du serveur.
+
+Quand on curl l'adresse du serveur, cela nous renvoie en format JSON les 
+informations ci-dessus.
+
+On a un serveur local fonctionnel.
+Nécessité de rendre plus transportable cette application => Conteneurisation.
+
+
+
+--- Containers ---
+
+Il n’y a pas d’objets conteneur dans le noyau linux.
+
+Conteneurs = manière de concentrer les capacités du noyau linux.
+
+Capacités en questions:
+- namespaces (permet d’associer un processus/programme a une vue).
+- ability to hide parts of the system to a process.
+- cgroups (Allouer une partie du CPU a un processus)
+- ability to restrict resources for a given process
+- seccomp (Systeme de bridage des syscall linux)
+- sandbox processes by limiting usable syscalls.
+- Layered images (Étages de filesystem => pour construire les images Docker).
+
+
+Best practices:
+- Images Officielles
+- Images small => réduction de la surface d’attaque
+- 1 container 1 processus
+- Minimiser le nombre de couches (chaque cmd crée une couche)
+- NOT run App as root
+
+Alpine est l’os qui bundle les versions les plus petites des pkgs pour linux.
+
+40min: Explication d’un Dockerfile
+
+RUN => cmd pour créer l’image
+CMD => ce qui va se produire quand on démarre le container.
+Dans la plupart des cas, on veut que l’app dans le container ait le PID 1.
+
+docker-compose: 
+- solution qui permet d'homogénéiser la création d’un ensemble de container
+- permet de rassembler plusieurs images ensemble
+- C’est une solution qui permet de maquetter (je déclare ce que je veux dans 
+  ma plateforme => ca lance les containers) => pas pour la prod => pas scalable
+
+
+
+--- Kubernetes ---
+
+VM = nodes = instance EC2
+dans les nodes => il y a des pods
+Pods = 1 ou plusieurs containers mis ensemble = service
+Service => l'objet qui donne accès au service de ton pod
+
+pods existe au sein du cluster k8s => pas accessible de l'extérieur.
+docker-compose n’a pas d’orchestration
+
+K8s avantages:
+- l'auto-réparation
+- autoscaling
+- infrastructure immutable
+- méthode de monitoring
+- cluster k8s universel pour toutes les plateformes Cloud 
+  (une cmd fait la même chose)
+=> même syntaxe depuis notre Laptop que pour le cloud.
+
+Cluster k8s:
+Organisée autour d’un k8s master (dans le quel il y a une api) qui contrôle 
+l’ensemble des pods et des nœuds.
+
+minikube: a cluster on your laptop
+	=> une VM qui tourne avec un hyperviseur (VirtualBox). Dans cette VM, il y 
+       a tous les éléments qui composent un master (controller, scheduler, API).
+
+k8s is best in declarative with a manifest. (in yaml) => you are describing how
+the infra should be.
+
+In a pod:
+There are labels that help to identify a family of pods.
+Specs: define what there is in a pod.
+
+Au-dessus du pod, il y a un objet: Le déploiement.
+Le déploiement contient des pods.
+
+Les pods sont dans des réseaux privés inaccessibles.
+Le service détecte les pods sur lesquels il doit envoyer du trafic selon le 
+label qu'ils ont. 
+
+kubectl apply *.-deployment.yaml => permet de lancer/terminer les pods selon le 
+deployment
+kubectl get pods => permet de voir les pods qui tournent.
+
+kubectl apply *-svc.yaml => permet de lancer/terminer les services selon le svc.
+kubectl get service => permet de voir les services qui tournent.
+
+minikube service *-svc.yaml --url => get l’url du service.
+
+
+
+--- Amazon EKS ---
+
+Amazon EKS is the solution of AWS to host k8s. (60% of k8s workloads).
+On a juste à déployer les manifest sur le cloud. Le reste est manager pour toi.
+On s’occupe de l’architecture de l’appli. Pas de celle du master node.
+
+
+Pour exporter dans le cloud:
+- Lorsque l’on déclare un service (*svc-.yaml), on a un “type: NodePort” que 
+  l’on va changer en “type: LoadBalancer”;
+
+- On dit à minikube de changer de contexte (utiliser le contexte du 
+  Cloud provider).
+
+=> kubectl config use-context <aws-context>
+
+
+NodePort signifie que l’entry point de l’app va être un des ports de ton pc. 
+
+
+kubectl scale deployment --replicas=2 <deployment-name> => passage de 3 à 2 pods
+
+
+permet de faire scaler le service en impératif (mauvaise pratique) 
+=> il y a toujours 3 pods déclarés dans le fichier.
+
